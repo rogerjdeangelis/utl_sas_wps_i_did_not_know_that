@@ -119,4 +119,41 @@ Translating bad ascii chars and sort without by statement. Keywords: sas sql joi
          3         7
          3         3
 
+    * __
+     / _| ___ ___  _ __  _   _
+    | |_ / __/ _ \| '_ \| | | |
+    |  _| (_| (_) | |_) | |_| |
+    |_|  \___\___/| .__/ \__, |
+                  |_|    |___/
+    ;
+
+    Example 2: Copying a Binary File
+    This example copies a binary file from one directory to another.
+    Setting the MSGLEVEL= system option to I causes informational
+    messages from FCOPY to be written to the log.
+
+    /* Set MSGLEVEL to I to write messages from FCOPY to the log. */
+    options msglevel=i;
+
+    filename fro 'd:/xls/class.xlsx' recfm=n;
+    filename too 'd:/xls/class2.xlsx' recfm=n;
+
+    %utlfkil(d:/xls/class.xlsx);
+    libname xel "d:/xls/class.xlsx";
+    data xel.class;
+      set sashelp.class;
+    run;quit;
+    libname xel clear;
+
+    data _null_;
+       length msg $ 384;
+       rc=fcopy('fro', 'too');
+       if rc=0 then
+          put 'Copied FRO to TOO';
+       else do;
+          msg=sysmsg();
+          put rc= msg=;
+       end;
+    run;
+
 
